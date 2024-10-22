@@ -15,10 +15,9 @@ class ArticleController extends Controller
         try {
             $articles=Article::with('scategorie')->get(); // Inclut la sous catégorie liée;
             return response()->json($articles,200);
-            } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json("Sélection impossible {$e->getMessage()}");
-            }
-            
+        }
     }
 
     /**
@@ -38,9 +37,10 @@ class ArticleController extends Controller
             ]);
             $article->save();
             return response()->json($article);
-            } catch (\Exception $e) {
+
+        } catch (\Exception $e) {
             return response()->json("insertion impossible {$e->getMessage()}");
-            }
+        }
     }
 
     /**
@@ -51,9 +51,10 @@ class ArticleController extends Controller
         try {
             $article=Article::findOrFail($id);
             return response()->json($article);
-            } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json("probleme de récupération des données {$e->getMessage()}");
-            }    }
+        }
+    }
 
     /**
      * Update the specified resource in storage.
@@ -64,10 +65,10 @@ class ArticleController extends Controller
             $article=Article::findorFail($id);
             $article->update($request->all());
             return response()->json($article);
-            } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json("probleme de modification {$e->getMessage()}");
-            }
-                }
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -77,14 +78,14 @@ class ArticleController extends Controller
         try {
             $article=Article::findOrFail($id);
             $article->delete();
-            return response()->json("article supprimée avec succes");
-            } catch (\Exception $e) {
-            return response()->json("probleme de suppression de article {$e->getMessage()}");
-                }
-            }
+            return response()->json("catégorie supprimée avec succes");
+        } catch (\Exception $e) {
+            return response()->json("probleme de suppression de catégorie {$e->getMessage()}");
+        }
+    }
     public function articlesPaginate()
-            {
-            try {
+    {
+        try {
             $perPage = request()->input('pageSize', 2);
             // Récupère la valeur dynamique pour la pagination
             $articles = Article::with('scategorie')->paginate($perPage);
@@ -93,9 +94,8 @@ class ArticleController extends Controller
             'products' => $articles->items(), // Les articles paginés
             'totalPages' => $articles->lastPage(), // Le nombre de pages
             ]);
-            } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json("Selection impossible {$e->getMessage()}");
-            }
-            }
-
+        }
+    }
 }

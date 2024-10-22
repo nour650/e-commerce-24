@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use Exception;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -12,15 +13,11 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        {
-            try{
-                $categories=Categorie::all();
-                return response()->json($categories);
-    
-            }catch(\Exception $e){
-                return response()->json("impossible d afficher la liste de categories!!!! ");
-            }
-            //
+        try{
+            $categories=Categorie::all();
+            return response()->json($categories);
+        }catch(\Exception $e){
+            return response()->json("impossible d'affichier la liste des catégories !!!");
         }
     }
 
@@ -29,20 +26,16 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try{
             $categorie=new Categorie([
-                'nomcategorie' => $request->input("nomcategorie"),
-                'imagecategorie' => $request->input("imagecategorie"),
-    
+                "nomcategorie"=>$request->input("nomcategorie"),
+                "imagecategorie"=>$request->input("imagecategorie"),
             ]);
             $categorie->save();
             return response()->json($categorie);
         }catch(\Exception $e){
-            return  response()->json("Probleme d'ajout");
+            return response()->json("prob d'ajout");
         }
-       
-
     }
 
     /**
@@ -53,9 +46,8 @@ class CategorieController extends Controller
         try{
             $categorie=Categorie::findOrFail($id);
             return response()->json($categorie);
-
         }catch(\Exception $e){
-            return  response()->json("Probleme d'affichage");
+            return response()->json("prob d'affichage");
         }
     }
 
@@ -64,26 +56,26 @@ class CategorieController extends Controller
      */
     public function update(Request $request,$id)
     {
-        try{
-            $categorie=Categorie::findOrFail($id);
+        try {
+            $categorie=Categorie::findorFail($id);
             $categorie->update($request->all());
             return response()->json($categorie);
-        }catch(\Exception $e){
-            return  response()->json("Modification impossible");
-        }    }
+        } catch (\Exception $e) {
+            return response()->json("probleme de modification");
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
-try{
-
-    $categorie=Categorie::findOrFail($id);
-    $categorie->delete();
-    return response()->json("Categorie supprimé avec succès");
-    }catch(\Exception $e){
-            return  response()->json("Suppression impossible");
+        try {
+            $categorie=Categorie::findOrFail($id);
+            $categorie->delete();
+            return response()->json("catégorie supprimée avec succes");
+        } catch (\Exception $e) {
+            return response()->json("probleme de suppression de catégorie");
         }
-}
+    }
 }

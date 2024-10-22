@@ -13,12 +13,11 @@ class ScategorieController extends Controller
     public function index()
     {
         try{
-            $scategorie=Scategorie::with("categorie" )->get();
-            return response()->json($scategorie);
+            $scategories=Scategorie::with("categorie")->get();
+            return response()->json($scategories);
         }catch(\Exception $e){
-            return response()->json($e->getMessage(),$e->getCode());
+            return response()->json($e->getMessage(),500);
         }
-
     }
 
     /**
@@ -34,23 +33,21 @@ class ScategorieController extends Controller
             ]);
             $scategorie->save();
             return response()->json($scategorie);
-            
-        }
-        catch (\Exception $e) {
+            } catch (\Exception $e) {
             return response()->json("insertion impossible {$e->getMessage()}");
             }
     }
+
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        try{
-            $scategorie=Scategorie::with("categorie")->findOrFail($id);
+        try {
+            $scategorie=Scategorie::with('categorie')->findOrFail($id);
             return response()->json($scategorie);
-
-        }catch(\Exception $e){
-            return response()->json($e->getMessage(),$e->getCode());
+        } catch (\Exception $e) {
+        return response()->json("Sélection impossible {$e->getMessage()}");
         }
     }
 
@@ -58,30 +55,27 @@ class ScategorieController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    
     {
-        try{
-          $scategorie=Scategorie::findOrFail($id);
-          $scategorie->update($request->all());
-          return response()->json($scategorie);
-
-        }catch(\Exception $e){
-            return response()->json($e->getMessage(),$e->getCode());
+        try {
+            $scategorie=Scategorie::findorFail($id);
+            $scategorie->update($request->all());
+            return response()->json($scategorie);
+        } catch (\Exception $e) {
+            return response()->json("Modification impossible {$e->getMessage()}");
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        try{
+        try {
             $scategorie=Scategorie::findOrFail($id);
             $scategorie->delete();
-            return response()->json("sous categorie supprimer avec succées");
-  
-          }catch(\Exception $e){
-              return response()->json($e->getMessage(),$e->getCode());
-          }
+            return response()->json("Sous catégorie supprimée avec succes");
+        } catch (\Exception $e) {
+            return response()->json("Suppression impossible {$e->getMessage()}");
+        }
     }
 }

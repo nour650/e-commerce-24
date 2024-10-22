@@ -16,5 +16,4 @@ class Article extends Model
         {
         return $this->belongsTo(Scategorie::class,"scategorieID");
         }
-
 }
